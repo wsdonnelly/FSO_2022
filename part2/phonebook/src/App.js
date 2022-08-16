@@ -1,50 +1,17 @@
 import { useState, useEffect } from 'react'
+import Notification from './components/Notification'
+import Display from './components/Display'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
 import infoService from './services/info'
-
-const Display = ({name, number, handleRemove}) => {
-	return (
-		<p>
-			{name}{number}{'            '}
-			<button onClick={handleRemove}>delete</button>
-		</p>
-	)
-}
-
-const Filter = ({newFilter, handleFilterChange}) => {
-	return (
-		<div>
-			filter shown with<input
-				value={newFilter}
-				onChange={handleFilterChange}/>
-		</div>
-	)
-}
-
-const PersonForm = (props) => {
-	return (
-		<form onSubmit={props.addNameNumber}>
-			<div>
-				name:<input 
-					value={props.newName}
-					onChange={props.handleNameChange}/>
-			</div>
-			<div>
-				number: <input 
-					value={props.newNumber}
-					onChange={props.handleNumberChange}/>
-			</div>
-			<div>
-				<button type="submit">add</button>
-			</div>
-		</form>
-	)
-}
 
 const App = () => {
 	const [persons, setPersons] = useState([])
 	const [newName, setNewName] = useState('')
 	const [newNumber, setNewNumber] = useState('')
 	const [newFilter, setNewFilter] = useState('')
+	const [message, setMessage] = useState(null)
+	const [error, setError] = useState(false)
 	
 	useEffect(() => {
 		infoService
@@ -67,6 +34,18 @@ const App = () => {
 						setPersons(persons.map(p => p.id !== person.id ? p : returned))
 						setNewName('')
 						setNewNumber('')
+						setMessage(`${newName}'s number has been upated`)
+						setTimeout(() => {
+							setMessage(null)
+						}, 5000)
+						setError(false)
+					})
+					.catch(error => {
+						setMessage(`${newName}'s number was unable to update`)
+						setTimeout(() => {
+							setMessage(null)
+						}, 5000)
+						setError(true)
 					})
 			}
 		}
@@ -81,6 +60,18 @@ const App = () => {
 					setPersons(persons.concat(personObject))
 					setNewName('')
 					setNewNumber('')
+					setMessage(`${newName} has been added to the phonbook`)
+					setTimeout(() => {
+						setMessage(null)
+					}, 5000)
+					setError(false)
+				})
+				.catch(error => {
+					setMessage(`${newName} was unable to be added to the phonebook`)
+						setTimeout(() => {
+							setMessage(null)
+						}, 5000)
+						setError(true)
 				})
 		}
 	}
@@ -90,13 +81,20 @@ const App = () => {
 		if (window.confirm(`Do you really want to delete ${name} ?`)) {
 			infoService
 				.remove(id)
-				.then(
+				.then(returned => {
 					setPersons(persons.filter(person => person.id !== id))
+					setMessage(`${name} has been deleted from the phonebook`)
+					setTimeout(() => {
+						setMessage(null)
+					}, 5000)
+				}
 				)
 				.catch(error => {
-					alert(
-						`the id# ${id} was already deleted`
-					)
+						setMessage(`the id# ${id} was already deleted`)
+						setTimeout(() => {
+							setMessage(null)
+						}, 5000)
+						setError(true)
 				})
 		}
 	}
@@ -111,6 +109,7 @@ const App = () => {
 	return (
 		<div>
 			<h2>Phonebook</h2>
+			<Notification message={message} error={error}/>
 			<Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
 			<h2>add a new</h2>
 			<PersonForm

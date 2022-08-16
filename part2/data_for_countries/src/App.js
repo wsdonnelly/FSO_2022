@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-
 const Search = ({newSearch, handleSearchChange}) => {
 	return (
 		<div>
@@ -41,12 +40,8 @@ const DisplayCountry = ({c}) => {
 			})
 	}, [])
 
-
-	
-//	console.log('here', weather.main.temp)
 	return (
 		<div>
-			
 			<h1>{c.name.common}</h1>
 			<p>capital {c.capital}</p>
 			<p>area {c.area}</p>
