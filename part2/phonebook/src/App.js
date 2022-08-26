@@ -41,6 +41,7 @@ const App = () => {
 						setError(false)
 					})
 					.catch(error => {
+						console.log(error)
 						setMessage(`${newName}'s number was unable to update`)
 						setTimeout(() => {
 							setMessage(null)
@@ -67,7 +68,8 @@ const App = () => {
 					setError(false)
 				})
 				.catch(error => {
-					setMessage(`${newName} was unable to be added to the phonebook`)
+					console.log(error.response.data.error)
+					setMessage(error.response.data.error)
 						setTimeout(() => {
 							setMessage(null)
 						}, 5000)
@@ -90,7 +92,7 @@ const App = () => {
 				}
 				)
 				.catch(error => {
-						setMessage(`the id# ${id} was already deleted`)
+						setMessage(error.response.data.error)
 						setTimeout(() => {
 							setMessage(null)
 						}, 5000)

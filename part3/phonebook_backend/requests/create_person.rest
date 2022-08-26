@@ -1,0 +1,23 @@
+POST http://localhost:3001/api/persons
+content-type: application/json
+
+{
+    "name": "Fripp Drip",
+    "number": "1-234-456-7890"
+}
+###
+POST https://rocky-savannah-68381.herokuapp.com/api/persons
+content-type: application/json
+
+{
+	"name": "Dr Dom LoveJoy III",
+	"number": "1-23-456-7890"
+}
+###
+POST http://localhost:3000/api/persons/
+content-type: application/json
+
+{
+	"name": "Bilbo runny",
+	"number": "1-23-456666666-790"
+}

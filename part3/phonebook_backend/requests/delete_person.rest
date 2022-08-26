@@ -1,0 +1,5 @@
+DELETE http://localhost:3000/api/persons/630492c5522092186bb8903c
+###
+DELETE http://localhost:3000/api/persons/567
+###
+DELETE https://rocky-savannah-68381.herokuapp.com/api/persons/1
